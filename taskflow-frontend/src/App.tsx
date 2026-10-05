@@ -6,6 +6,8 @@ import ProjectDetails from "./pages/ProjectDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 
 
 function App() {
@@ -18,7 +20,14 @@ function App() {
 
         <Route path="/register" element={<Register />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
+              <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
         <Route path="/projects/:projectId" element={<ProjectDetails />} />
       </Routes>
