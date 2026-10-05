@@ -11,8 +11,14 @@ const getAuthHeaders = () => {
   };
 };
 
-export const getProjects = async (): Promise<Project[]> => {
-  const response = await fetch(API_URL, {
+export const getProjects = async (
+  search = ""
+): Promise<Project[]> => {
+  const url = search
+    ? `${API_URL}?search=${encodeURIComponent(search)}`
+    : API_URL;
+
+  const response = await fetch(url, {
     method: "GET",
     headers: getAuthHeaders(),
   });

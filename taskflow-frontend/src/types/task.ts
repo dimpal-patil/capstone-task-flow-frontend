@@ -3,5 +3,6 @@ export interface Task {
   title: string;
   description: string;
   status: string;
+  priority: string;
   project: string;
 }

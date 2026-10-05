@@ -14,10 +14,11 @@ function Dashboard() {
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [search, setSearch] = useState("");
 
   const fetchProjects = async () => {
     try {
-      const data = await getProjects();
+      const data = await getProjects(search);
       setProjects(data);
     } catch (error) {
       if (error instanceof Error) {
@@ -30,7 +31,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [search]);
 
   const handleProjectCreated = async (
     name: string,
@@ -118,9 +119,19 @@ const handleDeleteProject = async (projectId: string) => {
         </div>
 
         <div className="mt-8">
-          <h3 className="text-xl font-semibold">
-            My Projects
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold">
+                My Projects
+            </h3>
+
+            <input
+                type="text"
+                placeholder="Search projects..."
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                className="w-64 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            </div>
 
           {projects.length === 0 ? (
             <p className="mt-2 text-gray-600">
@@ -131,7 +142,7 @@ const handleDeleteProject = async (projectId: string) => {
             {projects.map((project) => (
   <div
     key={project._id}
-    className="rounded-md bg-white p-4 shadow"
+    className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
   >
     {editingProjectId === project._id ? (
       <div className="space-y-3">
@@ -171,28 +182,31 @@ const handleDeleteProject = async (projectId: string) => {
       <>
         <div
           onClick={() => navigate(`/projects/${project._id}`)}
-          className="cursor-pointer"
+          className="cursor-pointer rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
         >
-          <h4 className="text-lg font-bold">
+          <h4 className="text-xl font-semibold text-gray-800">
             {project.name}
           </h4>
 
-          <p className="mt-1 text-gray-600">
+          <p className="mt-2 text-sm leading-6 text-gray-600">
             {project.description}
           </p>
+          <p className="mt-4 text-sm font-medium text-blue-600">
+                View project details →
+        </p>
         </div>
 
         <div className="mt-4 flex gap-2">
           <button
             onClick={() => handleEditProject(project)}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
           >
             Edit
           </button>
 
           <button
           onClick={() => handleDeleteProject(project._id)}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
           >
             Delete
           </button>

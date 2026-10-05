@@ -36,7 +36,8 @@ export const createTask = async (
   projectId: string,
   title: string,
   description: string,
-  status: string
+  status: string,
+  priority : string,
 ): Promise<Task> => {
   const response = await fetch(
     `${API_URL}/projects/${projectId}/tasks`,
@@ -47,6 +48,7 @@ export const createTask = async (
         title,
         description,
         status,
+        priority,
       }),
     }
   );
@@ -64,7 +66,8 @@ export const updateTask = async (
   taskId: string,
   title: string,
   description: string,
-  status: string
+  status: string,
+  priority : string,
 ): Promise<Task> => {
   const response = await fetch(
     `${API_URL}/tasks/${taskId}`,
@@ -75,6 +78,7 @@ export const updateTask = async (
         title,
         description,
         status,
+        priority,
       }),
     }
   );

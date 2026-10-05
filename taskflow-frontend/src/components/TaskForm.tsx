@@ -4,7 +4,8 @@ interface TaskFormProps {
   onTaskCreated: (
     title: string,
     description: string,
-    status: string
+    status: string,
+    priority : string,
   ) => Promise<void>;
 }
 
@@ -12,6 +13,7 @@ function TaskForm({ onTaskCreated }: TaskFormProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("To Do");
+  const [priority, setPriority] = useState("Medium");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -24,11 +26,12 @@ function TaskForm({ onTaskCreated }: TaskFormProps) {
     try {
       setLoading(true);
 
-      await onTaskCreated(title, description, status);
+      await onTaskCreated(title, description, status, priority);
 
       setTitle("");
       setDescription("");
       setStatus("To Do");
+      setPriority("Medium");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -43,9 +46,9 @@ function TaskForm({ onTaskCreated }: TaskFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-4 space-y-4 rounded-lg bg-white p-6 shadow"
+      className="mt-4 space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
     >
-      <h4 className="text-xl font-semibold">
+      <h4 className="text-xl font-semibold text-gray-800">
         Create New Task
       </h4>
 
@@ -84,6 +87,16 @@ function TaskForm({ onTaskCreated }: TaskFormProps) {
         <option value="In Progress">In Progress</option>
         <option value="Done">Done</option>
       </select>
+
+        <select
+        value={priority}
+        onChange={(event) => setPriority(event.target.value)}
+        className="w-full rounded-md border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+    </select>
 
       <button
         type="submit"
