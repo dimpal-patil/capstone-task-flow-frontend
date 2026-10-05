@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import { getProject } from "../services/projectApi";
-import { getTasks } from "../services/taskApi";
+import { createTask, getTasks } from "../services/taskApi";
 import type { Project } from "../types/project";
 import type { Task } from "../types/task";
+import TaskForm from "../components/TaskForm";
 
 function ProjectDetails() {
   const { projectId } = useParams();
@@ -38,6 +39,28 @@ function ProjectDetails() {
     fetchProjectAndTasks();
   }, [projectId]);
 
+  const handleTaskCreated = async (
+    title: string,
+    description: string,
+    status: string
+  ) => {
+    if (!projectId) {
+      return;
+    }
+
+    const newTask = await createTask(
+      projectId,
+      title,
+      description,
+      status
+    );
+
+    setTasks((currentTasks) => [
+      ...currentTasks,
+      newTask,
+    ]);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
@@ -66,8 +89,12 @@ function ProjectDetails() {
                 Tasks
               </h3>
 
+              <TaskForm
+                onTaskCreated={handleTaskCreated}
+              />
+
               {tasks.length === 0 ? (
-                <p className="mt-2 text-gray-600">
+                <p className="mt-4 text-gray-600">
                   No tasks found.
                 </p>
               ) : (
