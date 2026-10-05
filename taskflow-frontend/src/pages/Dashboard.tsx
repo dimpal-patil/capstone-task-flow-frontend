@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ProjectForm from "../components/ProjectForm";
 import { createProject, getProjects } from "../services/projectApi";
@@ -9,6 +10,7 @@ import Navbar from "../components/NavBar";
 function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const fetchProjects = async () => {
     try {
@@ -72,17 +74,18 @@ function Dashboard() {
           ) : (
             <div className="mt-4 space-y-3">
               {projects.map((project) => (
-                <div
-                  key={project._id}
-                  className="rounded-md bg-white p-4 shadow"
+            <div
+                key={project._id}
+                onClick={() => navigate(`/projects/${project._id}`)}
+                className="cursor-pointer rounded-md bg-white p-4 shadow hover:shadow-md"
                 >
-                  <h4 className="text-lg font-bold">
+                <h4 className="text-lg font-bold">
                     {project.name}
-                  </h4>
+                </h4>
 
-                  <p className="mt-1 text-gray-600">
+                <p className="mt-1 text-gray-600">
                     {project.description}
-                  </p>
+                </p>
                 </div>
               ))}
             </div>
