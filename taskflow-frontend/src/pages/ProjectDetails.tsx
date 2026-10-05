@@ -169,20 +169,24 @@ const filteredTasks = tasks.filter((task) => {
 
   return matchesStatus && matchesPriority;
 });
+const completedTasks = tasks.filter((task) => task.status === "Done").length;
+const completionPercent = tasks.length
+  ? Math.round((completedTasks / tasks.length) * 100)
+  : 0;
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
 
-      <main className="mx-auto max-w-6xl p-6">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
         <button
           onClick={() => navigate("/dashboard")}
-          className="mb-4 text-sm font-medium text-blue-600 hover:text-blue-800"
+          className="mb-5 inline-flex items-center text-sm font-semibold text-blue-700 transition hover:text-blue-900"
         >
           ← Back to Dashboard
         </button>
         {error && (
-          <p className="text-red-600">
+          <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {error}
           </p>
         )}
@@ -190,41 +194,65 @@ const filteredTasks = tasks.filter((task) => {
         {project && (
           <>
            {/* Project Details */}
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-            <p className="text-sm font-medium uppercase tracking-wide text-blue-600">
+          <section className="overflow-hidden rounded-xl border border-slate-200 border-l-4 border-l-blue-600 bg-white p-6 shadow-sm sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-widest text-blue-700">
               Project
             </p>
 
-            <h2 className="mt-1 text-3xl font-bold text-gray-800">
+            <h2 className="mt-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">
               {project.name}
             </h2>
 
-            <p className="mt-3 leading-6 text-gray-600">
+            <p className="mt-3 max-w-3xl leading-7 text-slate-600">
               {project.description}
             </p>
-          </div>
+
+            <div className="mt-7 max-w-3xl border-t border-slate-100 pt-5">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-bold text-slate-800">Project progress</p>
+                <p className="text-sm font-semibold text-slate-600">
+                  {completedTasks} of {tasks.length} tasks complete
+                  <span className="ml-2 text-blue-700">{completionPercent}%</span>
+                </p>
+              </div>
+              <div
+                role="progressbar"
+                aria-label="Project progress"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={completionPercent}
+                aria-valuetext={`${completedTasks} of ${tasks.length} tasks complete`}
+                className="h-2.5 overflow-hidden rounded-full bg-slate-100"
+              >
+                <div
+                  className="h-full rounded-full bg-blue-600 transition-all duration-500"
+                  style={{ width: `${completionPercent}%` }}
+                />
+              </div>
+            </div>
+          </section>
 
             {/* Tasks Section */}
-            <div className="mt-8">
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold text-gray-800">
+            <div className="mt-9">
+              <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
+                <h3 className="text-2xl font-extrabold text-slate-900">
                   Tasks
                 </h3>
 
-                <span className="text-sm text-gray-500">
+                <span className="text-sm font-medium text-slate-500">
                   {filteredTasks.length} task{filteredTasks.length !== 1 ? "s" : ""}
                 </span>
               </div>
-              <div className="mt-4">
-                <p className="mb-2 text-sm font-medium text-gray-600">
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm font-semibold text-slate-700">
                   Filter tasks
                 </p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-md border border-gray-300 bg-white p-2"
+            className="min-h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           >
             <option value="All">All Statuses</option>
             <option value="To Do">To Do</option>
@@ -235,7 +263,7 @@ const filteredTasks = tasks.filter((task) => {
         <select
           value={priorityFilter}
           onChange={(event) => setPriorityFilter(event.target.value)}
-          className="rounded-md border border-gray-300 bg-white p-2"
+          className="min-h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         >
           <option value="All">All Priorities</option>
           <option value="Low">Low</option>
@@ -248,7 +276,7 @@ const filteredTasks = tasks.filter((task) => {
           setPriorityFilter("All");
         }}
         disabled={statusFilter === "All" && priorityFilter === "All"}
-        className="rounded-md bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-200 disabled:cursor-not-allowed disabled:opacity-50"
+        className="min-h-11 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 disabled:cursor-not-allowed disabled:opacity-40"
       >
         Clear Filters
       </button>
@@ -262,32 +290,38 @@ const filteredTasks = tasks.filter((task) => {
 
               {/* Task List */}
               {filteredTasks.length === 0 ? (
-                <div className="mt-4 rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
-                  <p className="text-lg font-medium text-gray-700">
+                <div className="mt-5 rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+                  <p className="text-lg font-bold text-slate-800">
                     No tasks found
                   </p>
 
-                  <p className="mt-2 text-sm text-gray-500">
+                  <p className="mt-2 text-sm text-slate-500">
                     Create a task above to start managing this project.
                   </p>
                 </div>
               ) : (
-                <div className="mt-4 space-y-3">
+                <div className="mt-5 space-y-3">
                   {filteredTasks.map((task) => (
                 <div
                     key={task._id}
-                    className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+                    className={`rounded-xl border border-l-4 border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:border-slate-300 hover:shadow-md sm:p-6 ${
+                      task.status === "Done"
+                        ? "border-l-emerald-500"
+                        : task.status === "In Progress"
+                          ? "border-l-blue-500"
+                          : "border-l-slate-300"
+                    }`}
                 >
               {editingTaskId === task._id ? (
         <div className="space-y-3">
-          <h4 className="text-lg font-semibold text-gray-800">
+          <h4 className="text-lg font-bold text-slate-900">
             Edit Task
           </h4>
         <input
           type="text"
           value={editTitle}
           onChange={(event) => setEditTitle(event.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2"
+          className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         />
 
       <textarea
@@ -296,13 +330,13 @@ const filteredTasks = tasks.filter((task) => {
           setEditDescription(event.target.value)
         }
         rows={3}
-        className="w-full rounded-md border border-gray-300 p-2"
+        className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
       />
 
     <select
       value={editStatus}
       onChange={(event) => setEditStatus(event.target.value)}
-      className="w-full rounded-md border border-gray-300 p-2"
+      className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
       >
       <option value="To Do">To Do</option>
       <option value="In Progress">In Progress</option>
@@ -312,7 +346,7 @@ const filteredTasks = tasks.filter((task) => {
     <select
       value={editPriority}
       onChange={(event) => setEditPriority(event.target.value)}
-      className="w-full rounded-md border border-gray-300 p-2"
+      className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
       >
       <option value="Low">Low</option>
       <option value="Medium">Medium</option>
@@ -322,14 +356,14 @@ const filteredTasks = tasks.filter((task) => {
     <div className="flex gap-2">
       <button 
       onClick={() => handleTaskUpdated(task._id)}
-        className="rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700"
+        className="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
       >
         Save
       </button>
 
       <button
         onClick={() => setEditingTaskId(null)}
-        className="rounded-md bg-gray-500 px-4 py-2 text-sm text-white hover:bg-gray-600"
+        className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
       >
         Cancel
       </button>
@@ -337,17 +371,19 @@ const filteredTasks = tasks.filter((task) => {
   </div>
 ) : (
   <>
-    <h4 className="text-lg font-bold">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <div className="min-w-0">
+    <h4 className="text-lg font-bold text-slate-900">
       {task.title}
     </h4>
 
-    <p className="mt-1 text-gray-600">
+    <p className="mt-1 text-sm leading-6 text-slate-600">
       {task.description}
     </p>
 
     <div className="mt-3 flex flex-wrap gap-2">
       <span
-        className={`rounded-full px-3 py-1 text-sm font-medium ${getStatusClasses(
+        className={`rounded-full px-3 py-1 text-xs font-bold ${getStatusClasses(
           task.status
         )}`}
       >
@@ -355,7 +391,7 @@ const filteredTasks = tasks.filter((task) => {
       </span>
 
       <span
-        className={`rounded-full px-3 py-1 text-sm font-medium ${getPriorityClasses(
+        className={`rounded-full px-3 py-1 text-xs font-bold ${getPriorityClasses(
           task.priority
         )}`}
       >
@@ -363,20 +399,22 @@ const filteredTasks = tasks.filter((task) => {
       </span>
     </div>
 
-    <div className="mt-4 flex gap-2">
+    </div>
+    <div className="flex shrink-0 gap-2 self-start">
       <button
         onClick={() => handleEditClick(task)}
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+        className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
       >
         Edit
       </button>
 
       <button
       onClick={() => handleDeleteTask(task._id)}
-        className="rounded-md bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+        className="rounded-lg px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
       >
         Delete
       </button>
+    </div>
     </div>
   </>
 )}

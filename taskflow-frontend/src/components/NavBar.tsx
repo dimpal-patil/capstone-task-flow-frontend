@@ -12,20 +12,26 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between bg-blue-600 px-6 py-4 text-white">
-      <h1
-        className="cursor-pointer text-2xl font-bold"
-        onClick={() => navigate("/dashboard")}
-      >
-        TaskFlow
-      </h1>
+    <nav className="border-b border-slate-200 bg-white text-slate-900 shadow-sm">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+        <button
+          type="button"
+          className="group inline-flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          onClick={() => navigate("/dashboard")}
+        >
+          <span className="grid size-10 place-items-center rounded-lg bg-blue-700 text-lg font-black text-white shadow-sm transition group-hover:bg-blue-800">
+            T
+          </span>
+          <span className="text-xl font-extrabold text-slate-900">TaskFlow</span>
+        </button>
 
-      <button
-        onClick={handleLogout}
-        className="rounded-md bg-white px-4 py-2 font-medium text-blue-600 hover:bg-gray-100"
-      >
-        Logout
-      </button>
+        <button
+          onClick={handleLogout}
+          className="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   );
 }

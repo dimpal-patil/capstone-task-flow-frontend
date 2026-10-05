@@ -15,6 +15,7 @@ function Dashboard() {
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [search, setSearch] = useState("");
+  const [projectStatusFilter, setProjectStatusFilter] = useState("Active");
 
   const fetchProjects = async () => {
     try {
@@ -53,15 +54,22 @@ function Dashboard() {
 
 const handleProjectUpdated = async (projectId: string) => {
   try {
+    const currentProject = projects.find(
+      (project) => project._id === projectId
+    );
+
     const updatedProject = await updateProject(
       projectId,
       editName,
-      editDescription
+      editDescription,
+      currentProject?.status || "Active"
     );
 
     setProjects((currentProjects) =>
       currentProjects.map((project) =>
-        project._id === projectId ? updatedProject : project
+        project._id === projectId
+          ? updatedProject
+          : project
       )
     );
 
@@ -74,6 +82,36 @@ const handleProjectUpdated = async (projectId: string) => {
     }
   }
 };
+
+const handleArchiveToggle = async (project: Project) => {
+  const newStatus =
+    project.status === "Archived" ? "Active" : "Archived";
+
+  try {
+    const updatedProject = await updateProject(
+      project._id,
+      project.name,
+      project.description,
+      newStatus
+    );
+
+    setProjects((currentProjects) =>
+      currentProjects.map((currentProject) =>
+        currentProject._id === project._id
+          ? updatedProject
+          : currentProject
+      )
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      setError(error.message);
+    } else {
+      setError("Failed to update project status");
+    }
+  }
+};
+
+
 const handleDeleteProject = async (projectId: string) => {
   const confirmed = window.confirm(
     "Are you sure you want to delete this project?"
@@ -97,17 +135,27 @@ const handleDeleteProject = async (projectId: string) => {
     }
   }
 };
+
+const filteredProjects = projects.filter((project) => {
   return (
-    <div className="min-h-screen bg-gray-100">
+    projectStatusFilter === "All" ||
+    project.status === projectStatusFilter
+  );
+});
+  return (
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
 
-      <main className="p-6">
-        <h2 className="text-3xl font-bold">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+        <p className="text-xs font-bold uppercase tracking-widest text-blue-700">
+          Workspace
+        </p>
+        <h2 className="mt-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">
           Dashboard
         </h2>
 
         {error && (
-          <p className="mt-4 text-red-600">
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {error}
           </p>
         )}
@@ -118,31 +166,48 @@ const handleDeleteProject = async (projectId: string) => {
           />
         </div>
 
-        <div className="mt-8">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold">
-                My Projects
-            </h3>
+        <section className="mt-9">
+         <div className="flex flex-wrap items-center justify-between gap-3">
+  <h3 className="text-xl font-semibold">
+    My Projects
+  </h3>
 
-            <input
-                type="text"
-                placeholder="Search projects..."
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                className="w-64 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            </div>
+  <div className="flex flex-wrap gap-3">
+    <select
+      value={projectStatusFilter}
+      onChange={(event) =>
+        setProjectStatusFilter(event.target.value)
+      }
+      className="rounded-md border border-gray-300 bg-white p-2"
+    >
+      <option value="Active">Active Projects</option>
+      <option value="Archived">Archived Projects</option>
+      <option value="All">All Projects</option>
+    </select>
+
+    <input
+      type="text"
+      placeholder="Search projects..."
+      value={search}
+      onChange={(event) => setSearch(event.target.value)}
+      className="w-64 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+</div>
 
           {projects.length === 0 ? (
-            <p className="mt-2 text-gray-600">
-              No projects found.
-            </p>
+            <div className="mt-5 rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+              <p className="text-lg font-bold text-slate-800">No projects found</p>
+              <p className="mt-2 text-sm text-slate-500">
+                Create a project above to get started.
+              </p>
+            </div>
           ) : (
-            <div className="mt-4 space-y-3">
-            {projects.map((project) => (
-  <div
+            <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {filteredProjects.map((project) => (
+  <article
     key={project._id}
-    className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+    className="rounded-xl border border-l-4 border-slate-200 border-l-blue-500 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md sm:p-6"
   >
     {editingProjectId === project._id ? (
       <div className="space-y-3">
@@ -150,7 +215,7 @@ const handleDeleteProject = async (projectId: string) => {
           type="text"
           value={editName}
           onChange={(event) => setEditName(event.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2"
+          className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         />
 
         <textarea
@@ -159,20 +224,20 @@ const handleDeleteProject = async (projectId: string) => {
             setEditDescription(event.target.value)
           }
           rows={3}
-          className="w-full rounded-md border border-gray-300 p-2"
+          className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         />
 
         <div className="flex gap-2">
           <button
             onClick={() => handleProjectUpdated(project._id)}
-            className="rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700"
+            className="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
             Save
           </button>
 
           <button
             onClick={() => setEditingProjectId(null)}
-            className="rounded-md bg-gray-500 px-4 py-2 text-sm text-white hover:bg-gray-600"
+            className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
             Cancel
           </button>
@@ -180,44 +245,66 @@ const handleDeleteProject = async (projectId: string) => {
       </div>
     ) : (
       <>
-        <div
+        <button
+          type="button"
           onClick={() => navigate(`/projects/${project._id}`)}
-          className="cursor-pointer rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+          className="group block w-full rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
         >
-          <h4 className="text-xl font-semibold text-gray-800">
+          <h4 className="text-xl font-bold text-slate-900 transition group-hover:text-blue-800">
             {project.name}
           </h4>
 
-          <p className="mt-2 text-sm leading-6 text-gray-600">
+            <span
+                className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-medium ${
+                    project.status === "Archived"
+                    ? "bg-gray-200 text-gray-700"
+                    : "bg-green-100 text-green-700"
+                }`}
+                >
+                {project.status}
+            </span>
+
+
+          <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
             {project.description}
           </p>
-          <p className="mt-4 text-sm font-medium text-blue-600">
-                View project details →
-        </p>
-        </div>
+          <span className="mt-4 inline-flex text-sm font-bold text-blue-700 transition group-hover:translate-x-1">
+            View project details <span className="ml-1" aria-hidden="true">→</span>
+          </span>
+        </button>
 
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex gap-2 border-t border-slate-100 pt-4">
           <button
             onClick={() => handleEditProject(project)}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
             Edit
           </button>
 
           <button
           onClick={() => handleDeleteProject(project._id)}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+            className="rounded-lg px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
           >
             Delete
           </button>
+          <button
+            onClick={() => handleArchiveToggle(project)}
+            className={
+                project.status === "Archived"
+                ? "rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+                : "rounded-md bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600"
+            }
+            >
+            {project.status === "Archived" ? "Restore" : "Archive"}
+            </button>
         </div>
       </>
     )}
-  </div>
+  </article>
 ))}
             </div>
           )}
-        </div>
+        </section>
       </main>
     </div>
   );

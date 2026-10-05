@@ -74,7 +74,9 @@ export const getProject = async (
 export const updateProject = async (
   projectId: string,
   name: string,
-  description: string
+  description: string,
+  status : string,
+  
 ): Promise<Project> => {
   const response = await fetch(`${API_URL}/${projectId}`, {
     method: "PUT",
@@ -82,6 +84,7 @@ export const updateProject = async (
     body: JSON.stringify({
       name,
       description,
+      status,
     }),
   });
 
