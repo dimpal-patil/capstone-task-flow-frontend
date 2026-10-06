@@ -40,15 +40,15 @@ function Login() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10">
       <div className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-blue-600 bg-white p-6 shadow-xl shadow-slate-200/70 sm:p-9">
         <div className="mb-8 text-center">
-          <p className="text-sm font-extrabold uppercase tracking-widest text-blue-700">
+        <p className="text-sm font-extrabold uppercase tracking-widest text-blue-700">
             TaskFlow
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold text-slate-900">
+        </p>
+        <h1 className="mt-3 text-3xl font-extrabold text-slate-900">
             Welcome back
-          </h1>
-          <p className="mt-2 text-sm text-slate-500">
+        </h1>
+        <p className="mt-2 text-sm text-slate-500">
             Log in to your account
-          </p>
+        </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,14 +58,14 @@ function Login() {
             </label>
 
             <input
-              id="login-email"
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                id="login-email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
           </div>
 
