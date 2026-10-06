@@ -1,4 +1,3 @@
-
 import type { Task } from "../types/task";
 
 const API_URL = "http://localhost:3000/api";
@@ -12,16 +11,11 @@ const getAuthHeaders = () => {
   };
 };
 
-export const getTasks = async (
-  projectId: string
-): Promise<Task[]> => {
-  const response = await fetch(
-    `${API_URL}/projects/${projectId}/tasks`,
-    {
-      method: "GET",
-      headers: getAuthHeaders(),
-    }
-  );
+export const getTasks = async (projectId: string): Promise<Task[]> => {
+  const response = await fetch(`${API_URL}/projects/${projectId}/tasks`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
 
   const data = await response.json();
 
@@ -37,21 +31,18 @@ export const createTask = async (
   title: string,
   description: string,
   status: string,
-  priority : string,
+  priority: string,
 ): Promise<Task> => {
-  const response = await fetch(
-    `${API_URL}/projects/${projectId}/tasks`,
-    {
-      method: "POST",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({
-        title,
-        description,
-        status,
-        priority,
-      }),
-    }
-  );
+  const response = await fetch(`${API_URL}/projects/${projectId}/tasks`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      description,
+      status,
+      priority,
+    }),
+  });
 
   const data = await response.json();
 
@@ -67,21 +58,18 @@ export const updateTask = async (
   title: string,
   description: string,
   status: string,
-  priority : string,
+  priority: string,
 ): Promise<Task> => {
-  const response = await fetch(
-    `${API_URL}/tasks/${taskId}`,
-    {
-      method: "PUT",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({
-        title,
-        description,
-        status,
-        priority,
-      }),
-    }
-  );
+  const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      description,
+      status,
+      priority,
+    }),
+  });
 
   const data = await response.json();
 
@@ -92,16 +80,11 @@ export const updateTask = async (
   return data.task;
 };
 
-export const deleteTask = async (
-  taskId: string
-): Promise<void> => {
-  const response = await fetch(
-    `${API_URL}/tasks/${taskId}`,
-    {
-      method: "DELETE",
-      headers: getAuthHeaders(),
-    }
-  );
+export const deleteTask = async (taskId: string): Promise<void> => {
+  const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
 
   const data = await response.json();
 
@@ -109,4 +92,3 @@ export const deleteTask = async (
     throw new Error(data.message || "Failed to delete task");
   }
 };
-
