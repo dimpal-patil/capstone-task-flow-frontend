@@ -13,8 +13,8 @@ const getAuthHeaders = () => {
 
 export const getProjects = async (search = ""): Promise<Project[]> => {
   const url = search
-    ? `${API_URL}?search=${encodeURIComponent(search)}`
-    : API_URL;
+  ? `${API_URL}/projects?search=${encodeURIComponent(search)}`
+  : `${API_URL}/projects`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -34,7 +34,7 @@ export const createProject = async (
   name: string,
   description: string,
 ): Promise<Project> => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/projects`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify({
@@ -53,7 +53,7 @@ export const createProject = async (
 };
 
 export const getProject = async (projectId: string): Promise<Project> => {
-  const response = await fetch(`${API_URL}/${projectId}`, {
+  const response = await fetch(`${API_URL}/projects/${projectId}`, {
     method: "GET",
     headers: getAuthHeaders(),
   });
@@ -73,7 +73,7 @@ export const updateProject = async (
   description: string,
   status: string,
 ): Promise<Project> => {
-  const response = await fetch(`${API_URL}/${projectId}`, {
+  const response = await fetch(`${API_URL}/projects/${projectId}`, {
     method: "PUT",
     headers: getAuthHeaders(),
     body: JSON.stringify({
@@ -93,7 +93,7 @@ export const updateProject = async (
 };
 
 export const deleteProject = async (projectId: string): Promise<void> => {
-  const response = await fetch(`${API_URL}/${projectId}`, {
+  const response = await fetch(`${API_URL}/projects/${projectId}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
