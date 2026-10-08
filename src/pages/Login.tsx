@@ -45,10 +45,10 @@ function Login() {
       </div>
       <div className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-brand-600 bg-white dark:border-slate-700 dark:bg-slate-900 p-6 shadow-2xl shadow-slate-900/20 dark:shadow-slate-950/70 sm:p-9">
         <div className="mb-8 text-center">
-          <p className="text-sm font-extrabold tracking-widest text-brand-700">
+          <p className="text-3xl font-extrabold tracking-widest text-brand-700">
             TaskFlow
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold text-slate-900 dark:text-white">
+          <h1 className="mt-3 text-sm font-extrabold text-slate-900 dark:text-white">
             Welcome back
           </h1>
           <p className="mt-2 text-sm text-slate-500 dark:text-slate-300">
