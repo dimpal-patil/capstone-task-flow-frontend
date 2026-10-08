@@ -9,7 +9,7 @@ The frontend provides an interface for users to create and manage projects, orga
 ## Deployment
 
 **Live Application:**
-https://capstone-task-flow-frontend-e92hw5rkd-dimpal-patils-projects.vercel.app/login
+https://capstone-task-flow-frontend-psi.vercel.app/login
 
 **Frontend Repository:**
 https://github.com/dimpal-patil/capstone-task-flow-frontend
