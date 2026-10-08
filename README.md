@@ -6,6 +6,21 @@ The frontend provides an interface for users to create and manage projects, orga
 
 ---
 
+## Deployment
+
+**Live Application:**
+https://capstone-task-flow-frontend-e92hw5rkd-dimpal-patils-projects.vercel.app/login
+
+**Frontend Repository:**
+https://github.com/dimpal-patil/capstone-task-flow-frontend
+
+**Backend Repository:**
+https://github.com/dimpal-patil/capstone-task-flow-backend
+
+> **Note:** TaskFlow uses separate frontend and backend repositories.
+> The frontend communicates with the deployed backend API, so both services work together to provide the complete application.
+
+
 ## Features
 
 ### Authentication
