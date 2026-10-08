@@ -17,7 +17,6 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setError("");
     setIsSubmitting(true);
 
@@ -70,7 +69,10 @@ function Login() {
               type="email"
               autoComplete="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError("");
+              }}
               placeholder="Enter your email"
               required
             />
@@ -90,7 +92,10 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError("");
+                  }}
                 placeholder="Enter your password"
                 required
                 className="pr-16"
