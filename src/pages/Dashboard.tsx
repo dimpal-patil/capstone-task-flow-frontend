@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import ProjectForm from "../components/ProjectForm";
 import {
   Button,
@@ -29,123 +28,130 @@ function Dashboard() {
   const [search, setSearch] = useState("");
   const [projectStatusFilter, setProjectStatusFilter] = useState("Active");
 
-  const fetchProjects = async () => {
-    try {
-      const data = await getProjects(search);
-      setProjects(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Failed to get projects");
+    //Get Projects
+    const fetchProjects = async () => {
+      try {
+        const data = await getProjects(search);
+        setProjects(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to get projects");
+        }
       }
-    }
-  };
+    };
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      fetchProjects();
-    }, 300);
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        fetchProjects();
+      }, 300);
 
-    return () => clearTimeout(timeoutId);
-  }, [search]);
+      return () => clearTimeout(timeoutId);
+    }, [search]);
 
+  //Create Project 
   const handleProjectCreated = async (name: string, description: string) => {
-    const newProject = await createProject(name, description);
-
+  const newProject = await createProject(name, description);
     setProjects((currentProjects) => [...currentProjects, newProject]);
-  };
+    };
 
+  //Edit Project 
   const handleEditProject = (project: Project) => {
-    setEditingProjectId(project._id);
-    setEditName(project.name);
-    setEditDescription(project.description);
-  };
+      setEditingProjectId(project._id);
+      setEditName(project.name);
+      setEditDescription(project.description);
+    };
 
+  //Update Project
   const handleProjectUpdated = async (projectId: string) => {
-    try {
-      const currentProject = projects.find(
-        (project) => project._id === projectId,
-      );
+      try {
+        const currentProject = projects.find(
+          (project) => project._id === projectId,
+        );
 
-      const updatedProject = await updateProject(
-        projectId,
-        editName,
-        editDescription,
-        currentProject?.status || "Active",
-      );
+        const updatedProject = await updateProject(
+          projectId,
+          editName,
+          editDescription,
+          currentProject?.status || "Active",
+        );
 
-      setProjects((currentProjects) =>
-        currentProjects.map((project) =>
-          project._id === projectId ? updatedProject : project,
-        ),
-      );
+        setProjects((currentProjects) =>
+          currentProjects.map((project) =>
+            project._id === projectId ? updatedProject : project,
+          ),
+        );
 
-      setEditingProjectId(null);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Failed to update project");
+        setEditingProjectId(null);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to update project");
+        }
       }
-    }
-  };
+    };
 
+  //Archive Project  
   const handleArchiveToggle = async (project: Project) => {
-    const newStatus = project.status === "Archived" ? "Active" : "Archived";
+      const newStatus = project.status === "Archived" ? "Active" : "Archived";
 
-    try {
-      const updatedProject = await updateProject(
-        project._id,
-        project.name,
-        project.description,
-        newStatus,
-      );
+      try {
+        const updatedProject = await updateProject(
+          project._id,
+          project.name,
+          project.description,
+          newStatus,
+        );
 
-      setProjects((currentProjects) =>
-        currentProjects.map((currentProject) =>
-          currentProject._id === project._id ? updatedProject : currentProject,
-        ),
-      );
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Failed to update project status");
+        setProjects((currentProjects) =>
+          currentProjects.map((currentProject) =>
+            currentProject._id === project._id ? updatedProject : currentProject,
+          ),
+        );
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to update project status");
+        }
       }
-    }
-  };
+    };
 
+  //Delete Project
   const handleDeleteProject = async (projectId: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this project?",
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      await deleteProject(projectId);
-
-      setProjects((currentProjects) =>
-        currentProjects.filter((project) => project._id !== projectId),
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this project?",
       );
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Failed to delete project");
-      }
-    }
-  };
 
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await deleteProject(projectId);
+
+        setProjects((currentProjects) =>
+          currentProjects.filter((project) => project._id !== projectId),
+        );
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to delete project");
+        }
+      }
+    };
+
+  //Delete Project
   const filteredProjects = projects.filter((project) => {
-    return (
-      projectStatusFilter === "All" || project.status === projectStatusFilter
-    );
+      return (
+        projectStatusFilter === "All" || project.status === projectStatusFilter
+      );
   });
-  return (
+
+return (
     <div className="min-h-screen bg-gradient-to-br from-brand-200 via-brand-50 to-indigo-200 dark:from-indigo-900 dark:via-slate-950 dark:to-violet-900">
       <Navbar />
 

@@ -24,9 +24,7 @@ function TaskForm({ onTaskCreated }: TaskFormProps) {
 
     try {
       setLoading(true);
-
       await onTaskCreated(title, description, status, priority);
-
       setTitle("");
       setDescription("");
       setStatus("To Do");

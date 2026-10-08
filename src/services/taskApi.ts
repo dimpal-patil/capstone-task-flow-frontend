@@ -11,6 +11,7 @@ const getAuthHeaders = () => {
   };
 };
 
+//Get Tasks
 export const getTasks = async (projectId: string): Promise<Task[]> => {
   const response = await fetch(`${API_URL}/projects/${projectId}/tasks`, {
     method: "GET",
@@ -26,6 +27,7 @@ export const getTasks = async (projectId: string): Promise<Task[]> => {
   return data.tasks;
 };
 
+//Create Task
 export const createTask = async (
   projectId: string,
   title: string,
@@ -53,6 +55,7 @@ export const createTask = async (
   return data.task;
 };
 
+//Update Task
 export const updateTask = async (
   taskId: string,
   title: string,
@@ -80,6 +83,7 @@ export const updateTask = async (
   return data.task;
 };
 
+//Delete Task
 export const deleteTask = async (taskId: string): Promise<void> => {
   const response = await fetch(`${API_URL}/tasks/${taskId}`, {
     method: "DELETE",

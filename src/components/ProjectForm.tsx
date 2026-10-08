@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Input, Textarea, ErrorAlert } from "./ui/primitives";
-
 interface ProjectFormProps {
   onProjectCreated: (name: string, description: string) => Promise<void>;
 }
@@ -17,9 +16,7 @@ function ProjectForm({ onProjectCreated }: ProjectFormProps) {
 
     try {
       setLoading(true);
-
       await onProjectCreated(name, description);
-
       setName("");
       setDescription("");
     } catch (error) {

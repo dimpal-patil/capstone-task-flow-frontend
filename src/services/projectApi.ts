@@ -11,6 +11,7 @@ const getAuthHeaders = () => {
   };
 };
 
+//Get Projects
 export const getProjects = async (search = ""): Promise<Project[]> => {
   const url = search
   ? `${API_URL}/projects?search=${encodeURIComponent(search)}`
@@ -22,7 +23,6 @@ export const getProjects = async (search = ""): Promise<Project[]> => {
   });
 
   const data = await response.json();
-
   if (!response.ok) {
     throw new Error(data.message || "Failed to get projects");
   }
@@ -30,6 +30,22 @@ export const getProjects = async (search = ""): Promise<Project[]> => {
   return data.projects;
 };
 
+//Get Single Project
+export const getProject = async (projectId: string): Promise<Project> => {
+  const response = await fetch(`${API_URL}/projects/${projectId}`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to get project");
+  }
+
+  return data.project;
+};
+
+//Create Project
 export const createProject = async (
   name: string,
   description: string,
@@ -44,7 +60,6 @@ export const createProject = async (
   });
 
   const data = await response.json();
-
   if (!response.ok) {
     throw new Error(data.message || "Failed to create project");
   }
@@ -52,21 +67,7 @@ export const createProject = async (
   return data.project;
 };
 
-export const getProject = async (projectId: string): Promise<Project> => {
-  const response = await fetch(`${API_URL}/projects/${projectId}`, {
-    method: "GET",
-    headers: getAuthHeaders(),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to get project");
-  }
-
-  return data.project;
-};
-
+//Update Project
 export const updateProject = async (
   projectId: string,
   name: string,
@@ -92,6 +93,7 @@ export const updateProject = async (
   return data.project;
 };
 
+//Delete Project
 export const deleteProject = async (projectId: string): Promise<void> => {
   const response = await fetch(`${API_URL}/projects/${projectId}`, {
     method: "DELETE",

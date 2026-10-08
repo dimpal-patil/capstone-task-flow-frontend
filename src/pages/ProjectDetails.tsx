@@ -23,7 +23,6 @@ import TaskForm from "../components/TaskForm";
 function ProjectDetails() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-
   const [project, setProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState("");
@@ -59,6 +58,7 @@ function ProjectDetails() {
     fetchProjectAndTasks();
   }, [projectId]);
 
+  //Create Task
   const handleTaskCreated = async (
     title: string,
     description: string,
@@ -80,6 +80,7 @@ function ProjectDetails() {
     setTasks((currentTasks) => [...currentTasks, newTask]);
   };
 
+  //Edit Tasks
   const handleEditClick = (task: Task) => {
     setEditingTaskId(task._id);
     setEditTitle(task.title);
@@ -88,6 +89,7 @@ function ProjectDetails() {
     setEditPriority(task.priority);
   };
 
+  //Update Task
   const handleTaskUpdated = async (taskId: string) => {
     try {
       const updatedTask = await updateTask(
@@ -112,6 +114,7 @@ function ProjectDetails() {
     }
   };
 
+  //Delete Tasks
   const handleDeleteTask = async (taskId: string) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this task?",
@@ -136,6 +139,7 @@ function ProjectDetails() {
     }
   };
 
+  //Filtered Tasks based on priority and status
   const filteredTasks = tasks.filter((task) => {
     const matchesStatus =
       statusFilter === "All" || task.status === statusFilter;
