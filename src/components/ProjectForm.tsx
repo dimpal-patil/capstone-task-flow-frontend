@@ -31,7 +31,7 @@ function ProjectForm({ onProjectCreated }: ProjectFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl border border-slate-200 border-t-4 border-t-brand-600 bg-white dark:border-slate-700 dark:bg-slate-900 p-5 shadow-lg sm:p-6"
+      className="space-y-4 rounded-2xl border border-slate-200 border-t-4 border-t-brand-600 bg-white p-5 shadow-lg sm:p-6 dark:border-slate-500 dark:border-t-brand-400 dark:bg-slate-900"
     >
       <h3 className="text-xl font-semibold">Create New Project</h3>
 

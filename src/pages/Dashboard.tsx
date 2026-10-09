@@ -209,7 +209,7 @@ return (
               {filteredProjects.map((project) => (
                 <article
                   key={project._id}
-                  className="rounded-2xl border border-l-4 border-slate-200 border-l-brand-500 bg-white p-5 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-700"
+                  className="rounded-2xl border border-l-4 border-slate-200 border-l-brand-500 bg-white p-5 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl sm:p-6 dark:border-slate-500 dark:border-l-brand-400 dark:bg-slate-900 dark:hover:border-slate-400 dark:hover:border-l-brand-400"
                 >
                   {editingProjectId === project._id ? (
                     <div className="space-y-3">

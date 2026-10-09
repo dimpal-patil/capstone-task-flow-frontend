@@ -97,19 +97,20 @@ export function Select({
 /* ---------- Badge ---------- */
 
 const statusClasses: Record<string, string> = {
-  Done: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
+  Done: "bg-green-200 text-green-700 dark:bg-green-900 dark:text-green-300",
   "In Progress":
-    "bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-300",
-  "To Do": "bg-gray-100 text-gray-700 dark:bg-slate-800 dark:text-slate-300",
-  Active: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
-  Archived: "bg-gray-200 text-gray-700 dark:bg-slate-800 dark:text-slate-300",
+    "bg-brand-200 text-brand-700 dark:bg-brand-900 dark:text-brand-300",
+  "To Do": "bg-blue-200 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
+  Active: "bg-green-200 text-green-700 dark:bg-green-900 dark:text-green-300",
+  Archived:
+    "bg-violet-200 text-violet-900 dark:bg-violet-900 dark:text-violet-200",
 };
 
 const priorityClasses: Record<string, string> = {
-  High: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
+  High: "bg-red-200 text-red-700 dark:bg-red-900 dark:text-red-300",
   Medium:
-    "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
-  Low: "bg-gray-100 text-gray-700 dark:bg-slate-800 dark:text-slate-300",
+    "bg-yellow-200 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
+  Low: "bg-sky-200 text-sky-800 dark:bg-sky-950 dark:text-sky-300",
 };
 
 interface BadgeProps {

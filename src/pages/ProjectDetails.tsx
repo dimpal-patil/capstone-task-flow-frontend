@@ -172,7 +172,7 @@ function ProjectDetails() {
         {project && (
           <>
             {/* Project Details */}
-            <section className="overflow-hidden rounded-2xl border border-slate-200 border-l-4 border-l-brand-600 bg-white dark:border-slate-700 dark:bg-slate-900 p-6 shadow-lg sm:p-8">
+            <section className="overflow-hidden rounded-2xl border border-slate-200 border-l-4 border-l-brand-600 bg-white p-6 shadow-lg sm:p-8 dark:border-slate-500 dark:border-l-brand-400 dark:bg-slate-900">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-700 dark:text-brand-400">
                 Project
               </p>
@@ -288,12 +288,12 @@ function ProjectDetails() {
                   {filteredTasks.map((task) => (
                     <div
                       key={task._id}
-                      className={`rounded-2xl border border-l-4 border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 p-5 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-xl sm:p-6 ${
+                      className={`rounded-2xl border border-l-4 border-slate-200 bg-white p-5 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl sm:p-6 dark:border-slate-500 dark:bg-slate-900 dark:hover:border-slate-400 ${
                         task.status === "Done"
                           ? "border-l-emerald-500 dark:border-l-emerald-400"
                           : task.status === "In Progress"
                             ? "border-l-brand-500 dark:border-l-brand-400"
-                            : "border-l-slate-300 dark:border-l-slate-700"
+                            : "border-l-amber-500 dark:border-l-amber-400"
                       }`}
                     >
                       {editingTaskId === task._id ? (

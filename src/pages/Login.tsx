@@ -42,7 +42,7 @@ function Login() {
       <div className="absolute right-4 top-4">
         <ThemeToggle />
       </div>
-      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-brand-600 bg-white dark:border-slate-700 dark:bg-slate-900 p-6 shadow-2xl shadow-slate-900/20 dark:shadow-slate-950/70 sm:p-9">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-300 border-t-4 border-t-brand-600 bg-white p-6 shadow-2xl shadow-slate-900/20 sm:p-9 dark:border-slate-500 dark:border-t-brand-400 dark:bg-slate-900 dark:shadow-slate-950/70">
         <div className="mb-8 text-center">
           <p className="text-3xl font-extrabold tracking-widest text-brand-700">
             TaskFlow

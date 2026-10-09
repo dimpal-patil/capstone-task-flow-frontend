@@ -43,7 +43,7 @@ function TaskForm({ onTaskCreated }: TaskFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-5 space-y-4 rounded-2xl border border-slate-200 border-t-4 border-t-brand-600 bg-white dark:border-slate-700 dark:bg-slate-900 p-5 shadow-lg sm:p-6"
+      className="mt-5 space-y-4 rounded-2xl border border-slate-200 border-t-4 border-t-brand-600 bg-white p-5 shadow-lg sm:p-6 dark:border-slate-500 dark:border-t-brand-400 dark:bg-slate-900"
     >
       <h4 className="text-xl font-extrabold text-slate-900 dark:text-white">
         Create New Task
